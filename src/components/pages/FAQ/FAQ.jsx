@@ -25,10 +25,10 @@ const FAQ = () => {
     const [openIndex, setOpenIndex] = useState(null);
 
     return (
-        <section className="bg-[#0a0a0a] text-white py-24 px-6">
+        <section className="bg-[#0a0a0a] text-white my-20 py-24 px-6">
             <div className="max-w-4xl mx-auto">
                 {/* Header with entrance animation */}
-                <motion.div 
+                <motion.div
                     initial={{ opacity: 0, y: 20 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}

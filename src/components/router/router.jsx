@@ -7,6 +7,7 @@ import Contract from "../pages/Contract/Contract";
 import FAQ from "../pages/FAQ/FAQ";
 import Shop from "../pages/Shop/Shop";
 import Login from "../pages/Login/Login";
+import Coverage from "../../Coverage/Coverage";
 
 
 
@@ -18,6 +19,10 @@ export const router = createBrowserRouter([
         {
             index: true,
             Component: Home
+        },
+        {
+          path: '/coverage',
+          element: <Coverage></Coverage>
         },
         {
           path: 'about',
