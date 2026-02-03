@@ -38,7 +38,7 @@ const Banner = () => {
     const prevSlide = () => setCurrentIndex((prev) => (prev === 0 ? banners.length - 1 : prev - 1));
 
     return (
-        <section className="relative w-full h-[70vh] md:h-[85vh] lg:h-[90vh] overflow-hidden bg-[#0f0f0f]">
+        <section className="relative w-full lg:mb-10 md:mb-7 mb-5 h-[70vh] md:h-[85vh] lg:h-[90vh] overflow-hidden bg-[#0f0f0f]">
             <AnimatePresence mode="wait">
                 <motion.div
                     key={currentIndex}
