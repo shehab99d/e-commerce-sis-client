@@ -255,9 +255,9 @@ const Navbar = () => {
             >
               <span className="tracking-tighter">WAZIHA'S</span>
               <span className="font-light text-gray-300">/</span>
-              <span className="font-semibold tracking-wide">BUTICS</span>
+              <span className="font-semibold tracking-wide">BOUTIQUE</span>
             </Link>
-          </div>
+          </div> 
 
           {/* Center: Desktop Navigation */}
           <div className="hidden lg:flex items-center">
@@ -295,6 +295,11 @@ const Navbar = () => {
               <li>
                 <NavLink to="/faq" className={navClass}>
                   FAQ
+                </NavLink>
+              </li>
+              <li>
+                <NavLink to="/admin" className={navClass}>
+                  Admin
                 </NavLink>
               </li>
             </ul>
