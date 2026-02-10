@@ -16,6 +16,7 @@ import EditProduct from "../../AdminRoutes/EditProduct";
 import EditBanner from "../../AdminRoutes/EditBanner";
 import Editcard from "../../AdminRoutes/Editcard";
 import ManageUsers from "../../AdminRoutes/ManageUsers";
+import ShopDetail from "../pages/Shop/ShopDetail";
 
 
 
@@ -55,6 +56,10 @@ export const router = createBrowserRouter([
         {
           path: 'login',
           Component: Login
+        },
+        {
+          path: 'shop/:id',
+          Component: ShopDetail
         }
     ]
   },
