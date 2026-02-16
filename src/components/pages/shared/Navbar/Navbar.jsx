@@ -2,11 +2,15 @@ import React, { useState, useEffect } from "react";
 import { Link, NavLink } from "react-router-dom";
 import useAuth from "../../../../hook/useAuth";
 import Swal from "sweetalert2";
+import useRole from "../../../hook/useRole";
+
 
 const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const { user, logOut } = useAuth();
+  const { role, loading } = useRole();
+
 
   // Handle scroll effect
   useEffect(() => {
@@ -198,6 +202,7 @@ const Navbar = () => {
                       Contact
                     </NavLink>
                   </li>
+                  
                   <li>
                     <NavLink
                       to="/coverage"
@@ -226,6 +231,7 @@ const Navbar = () => {
                       FAQ
                     </NavLink>
                   </li>
+                  
 
                   {/* Mobile Sign Out */}
                   {user && (
@@ -257,7 +263,7 @@ const Navbar = () => {
               <span className="font-light text-gray-300">/</span>
               <span className="font-semibold tracking-wide">BOUTIQUE</span>
             </Link>
-          </div> 
+          </div>
 
           {/* Center: Desktop Navigation */}
           <div className="hidden lg:flex items-center">
@@ -297,11 +303,13 @@ const Navbar = () => {
                   FAQ
                 </NavLink>
               </li>
-              <li>
-                <NavLink to="/admin" className={navClass}>
-                  Admin
-                </NavLink>
-              </li>
+              {!loading && role === "admin" && (
+                <li>
+                  <NavLink to="/admin" className={navClass}>
+                    Admin
+                  </NavLink>
+                </li>
+              )}
             </ul>
           </div>
 

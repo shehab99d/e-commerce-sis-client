@@ -8,6 +8,7 @@ const AdminAddProduct = () => {
     const [product, setProduct] = useState({
         title: "",
         price: "",
+        description: "",
         size: [], // ⬅️ array
         image1: null,
         image2: null,
@@ -51,6 +52,7 @@ const AdminAddProduct = () => {
         const formData = new FormData();
         formData.append("title", product.title);
         formData.append("price", product.price);
+        formData.append("description", product.description);
         formData.append("size", JSON.stringify(product.size));
         formData.append("image1", product.image1);
         formData.append("image2", product.image2);
@@ -65,6 +67,7 @@ const AdminAddProduct = () => {
                 setProduct({
                     title: "",
                     price: "",
+                    description: "",
                     size: [],
                     image1: null,
                     image2: null,
@@ -95,7 +98,7 @@ const AdminAddProduct = () => {
 
                 <form onSubmit={handleSubmit} className="space-y-8">
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-                        
+
                         {/* Left Column */}
                         <div className="md:col-span-2 space-y-6">
                             <div className="bg-white p-6 rounded-2xl shadow-sm border border-slate-200">
@@ -133,6 +136,22 @@ const AdminAddProduct = () => {
                                             required
                                         />
                                     </div>
+                                    {/* Description */}
+                                    <div>
+                                        <label className="block text-sm font-medium text-slate-700 mb-1">
+                                            Product Description
+                                        </label>
+                                        <textarea
+                                            name="description"
+                                            value={product.description}
+                                            onChange={handleChange}
+                                            rows="4"
+                                            placeholder="Write full details about the dress..."
+                                            className="w-full border border-slate-300 p-3 rounded-xl focus:ring-2 focus:ring-black outline-none resize-none"
+                                            required
+                                        />
+                                    </div>
+
 
                                     {/* Sizes */}
                                     <div>
@@ -147,10 +166,9 @@ const AdminAddProduct = () => {
                                                     type="button"
                                                     onClick={() => handleSizeToggle(s)}
                                                     className={`px-4 py-2 rounded-xl border text-sm font-semibold transition-all
-                                                        ${
-                                                            product.size.includes(s)
-                                                                ? "bg-black text-white border-black"
-                                                                : "bg-white text-slate-700 border-slate-300 hover:border-black"
+                                                        ${product.size.includes(s)
+                                                            ? "bg-black text-white border-black"
+                                                            : "bg-white text-slate-700 border-slate-300 hover:border-black"
                                                         }
                                                     `}
                                                 >
@@ -217,10 +235,9 @@ const AdminAddProduct = () => {
                                 type="submit"
                                 disabled={loading}
                                 className={`w-full py-4 rounded-2xl font-bold text-white transition-all
-                                    ${
-                                        loading
-                                            ? "bg-slate-400 cursor-not-allowed"
-                                            : "bg-black hover:bg-slate-800"
+                                    ${loading
+                                        ? "bg-slate-400 cursor-not-allowed"
+                                        : "bg-black hover:bg-slate-800"
                                     }
                                 `}
                             >

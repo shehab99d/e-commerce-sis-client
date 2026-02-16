@@ -17,6 +17,7 @@ import EditBanner from "../../AdminRoutes/EditBanner";
 import Editcard from "../../AdminRoutes/Editcard";
 import ManageUsers from "../../AdminRoutes/ManageUsers";
 import ShopDetail from "../pages/Shop/ShopDetail";
+import Checkout from "../pages/checkout/Checkout";
 
 
 
@@ -60,6 +61,10 @@ export const router = createBrowserRouter([
         {
           path: 'shop/:id',
           Component: ShopDetail
+        },
+        {
+          path: 'checkout',
+          Component: Checkout
         }
     ]
   },
