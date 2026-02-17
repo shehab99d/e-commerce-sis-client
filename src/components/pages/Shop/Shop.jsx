@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import api from "../../../API/Axios";
+import ShopSkeleton from "./ShopSkeleton";
 
 const Shop = () => {
     const [products, setProducts] = useState([]);
@@ -23,11 +24,7 @@ const Shop = () => {
     }, []);
 
     if (loading) {
-        return (
-            <div className="text-center py-20 text-xl font-semibold">
-                Loading products...
-            </div>
-        );
+        return <ShopSkeleton count={8} />;
     }
 
     return (

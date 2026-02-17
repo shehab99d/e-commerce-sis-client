@@ -103,22 +103,22 @@ const AuthCard = () => {
     const onLogin = async (data) => {
         setIsLoading(true);
         try {
-            await loginUser(data.email, data.password);
-            toast.success("Welcome back! 🎉", {
-                position: "top-right",
-                autoClose: 3000,
-            });
+            const result = await loginUser(data.email, data.password);
+
+            // ✅ JWT GENERATE HERE
+            const res = await api.post("/jwt", { email: data.email });
+            localStorage.setItem("access-token", res.data.token);
+
+            toast.success("Welcome back! 🎉");
             navigate("/");
         } catch (error) {
-            toast.error(error.message || "Login failed. Please try again.", {
-                position: "top-right",
-                autoClose: 4000,
-            });
+            toast.error(error.message || "Login failed");
         } finally {
             setIsLoading(false);
             reset();
         }
     };
+
 
     // SIGN UP SUBMIT
     const onSignup = async (data) => {

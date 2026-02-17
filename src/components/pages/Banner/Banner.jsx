@@ -1,8 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ChevronRight, ChevronLeft, Sparkles, TrendingUp } from "lucide-react";
+import BannerSkeleton from "./BannerSkeleton";
 
 const Banner = () => {
+    const [loading, setLoading] = useState(true);
+
     const [currentIndex, setCurrentIndex] = useState(0);
 
     const banners = [
@@ -36,6 +39,16 @@ const Banner = () => {
         return () => clearInterval(timer);
     }, [banners.length]);
 
+    useEffect(() => {
+        const img = new Image();
+        img.src = banners[currentIndex].imageUrl;
+
+        img.onload = () => {
+            setLoading(false);
+        };
+    }, [currentIndex]);
+
+
     const nextSlide = () => setCurrentIndex((prev) => (prev === banners.length - 1 ? 0 : prev + 1));
     const prevSlide = () => setCurrentIndex((prev) => (prev === 0 ? banners.length - 1 : prev - 1));
 
@@ -49,6 +62,11 @@ const Banner = () => {
                 return <Sparkles size={18} className="transition-all group-hover:scale-110" />;
         }
     };
+
+    if (loading) {
+        return <BannerSkeleton />;
+    }
+
 
     return (
         <section className="relative w-full mt-4 lg:mb-10 md:mb-7 mb-5 h-[70vh] md:h-[85vh] lg:h-[90vh] overflow-hidden bg-gradient-to-br from-[#0a0a0a] to-[#1a1a1a]">
@@ -190,8 +208,8 @@ const Banner = () => {
                     >
                         <div
                             className={`h-[2px] transition-all duration-500 ${index === currentIndex
-                                    ? "w-14 bg-white shadow-lg shadow-white/50"
-                                    : "w-8 bg-white/40 group-hover:bg-white/60"
+                                ? "w-14 bg-white shadow-lg shadow-white/50"
+                                : "w-8 bg-white/40 group-hover:bg-white/60"
                                 }`}
                         />
                     </button>

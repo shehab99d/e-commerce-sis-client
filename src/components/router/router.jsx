@@ -18,6 +18,7 @@ import Editcard from "../../AdminRoutes/Editcard";
 import ManageUsers from "../../AdminRoutes/ManageUsers";
 import ShopDetail from "../pages/Shop/ShopDetail";
 import Checkout from "../pages/checkout/Checkout";
+import AdminRoute from "./AdminRoute";
 
 
 
@@ -25,52 +26,56 @@ export const router = createBrowserRouter([
   {
     path: "/",
     Component: rootLayout,
-    children:[
-        {
-            index: true,
-            Component: Home
-        },
-        {
-          path: '/coverage',
-          element: <Coverage></Coverage>
-        },
-        {
-          path: 'about',
-          Component: About
-        },
-        {
-          path: 'services',
-          Component: Services
-        },
-        {
-          path: 'contact',
-          Component: Contract
-        },
-        {
-          path: 'faq',
-          Component: FAQ
-        },
-        {
-          path: 'shop',
-          Component: Shop
-        },
-        {
-          path: 'login',
-          Component: Login
-        },
-        {
-          path: 'shop/:id',
-          Component: ShopDetail
-        },
-        {
-          path: 'checkout',
-          Component: Checkout
-        }
+    children: [
+      {
+        index: true,
+        Component: Home
+      },
+      {
+        path: '/coverage',
+        element: <Coverage></Coverage>
+      },
+      {
+        path: 'about',
+        Component: About
+      },
+      {
+        path: 'services',
+        Component: Services
+      },
+      {
+        path: 'contact',
+        Component: Contract
+      },
+      {
+        path: 'faq',
+        Component: FAQ
+      },
+      {
+        path: 'shop',
+        Component: Shop
+      },
+      {
+        path: 'login',
+        Component: Login
+      },
+      {
+        path: 'shop/:id',
+        Component: ShopDetail
+      },
+      {
+        path: 'checkout',
+        Component: Checkout
+      }
     ]
   },
   {
     path: 'admin',
-    Component: AdminLayout,
+    element: (
+      <AdminRoute>
+        <AdminLayout />
+      </AdminRoute>
+    ),
     children: [
       {
         index: true,
