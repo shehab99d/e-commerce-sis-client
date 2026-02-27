@@ -6,7 +6,6 @@ import Services from "../pages/Services/Services";
 import Contract from "../pages/Contract/Contract";
 import FAQ from "../pages/FAQ/FAQ";
 import Shop from "../pages/Shop/Shop";
-import Login from "../pages/Login/Login";
 import Coverage from "../../Coverage/Coverage";
 import AdminLayout from "../layouts/AdminLayout";
 import AdminAddProduct from "../../AdminRoutes/AdminAddProduct ";
@@ -15,10 +14,11 @@ import ManageProduct from "../../AdminRoutes/ManageProduct/ManageProduct";
 import EditProduct from "../../AdminRoutes/EditProduct";
 import EditBanner from "../../AdminRoutes/EditBanner";
 import Editcard from "../../AdminRoutes/Editcard";
-import ManageUsers from "../../AdminRoutes/ManageUsers";
 import ShopDetail from "../pages/Shop/ShopDetail";
 import Checkout from "../pages/checkout/Checkout";
 import AdminRoute from "./AdminRoute";
+import AuthCard from "../pages/Login/Login";
+import ManageUsers from "../../AdminRoutes/ManageUsers"
 
 
 
@@ -55,10 +55,15 @@ export const router = createBrowserRouter([
         path: 'shop',
         Component: Shop
       },
-      {
-        path: 'login',
-        Component: Login
-      },
+      // {
+      //   path: 'login',
+      //   // Component: Login
+      //   Component: AuthCard
+      // },
+    {
+      path: 'login',
+      Component: AuthCard
+    },
       {
         path: 'shop/:id',
         Component: ShopDetail

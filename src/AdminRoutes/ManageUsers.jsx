@@ -3,18 +3,21 @@ import api from "../API/Axios";
 import Swal from "sweetalert2";
 
 const ManageUsers = () => {
-    const [users, setUsers] = useState([]);
+    const [users, setUsers] = useState([]); // always array
     const [loading, setLoading] = useState(true);
 
-    // get all users
+    /* ================= FETCH USERS ================= */
     const fetchUsers = async () => {
         try {
             setLoading(true);
             const res = await api.get("/users");
-            setUsers(res.data.users);
+
+            // backend returns array directly
+            setUsers(Array.isArray(res.data) ? res.data : []);
         } catch (err) {
             console.error(err);
             Swal.fire("Error", "Failed to fetch users", "error");
+            setUsers([]);
         } finally {
             setLoading(false);
         }
@@ -24,34 +27,35 @@ const ManageUsers = () => {
         fetchUsers();
     }, []);
 
-    // handle actions with double confirmation
+    /* ================= CONFIRM ACTION ================= */
     const confirmAction = async (title, text, action) => {
-        const result1 = await Swal.fire({
+        const first = await Swal.fire({
             title,
             text,
             icon: "warning",
             showCancelButton: true,
-            confirmButtonText: "Yes, proceed!",
+            confirmButtonText: "Yes",
             cancelButtonText: "Cancel",
         });
 
-        if (result1.isConfirmed) {
-            const result2 = await Swal.fire({
-                title: "Are you really sure?",
-                text: "This action cannot be undone!",
-                icon: "warning",
-                showCancelButton: true,
-                confirmButtonText: "Yes, do it!",
-                cancelButtonText: "Cancel",
-            });
+        if (!first.isConfirmed) return;
 
-            if (result2.isConfirmed) {
-                await action();
-                Swal.fire("Success", "Action completed!", "success");
-            }
+        const second = await Swal.fire({
+            title: "Are you absolutely sure?",
+            text: "This action cannot be undone!",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonText: "Yes, do it",
+            cancelButtonText: "Cancel",
+        });
+
+        if (second.isConfirmed) {
+            await action();
+            Swal.fire("Success", "Action completed successfully!", "success");
         }
     };
 
+    /* ================= ACTIONS ================= */
     const handleMakeAdmin = (id) => {
         confirmAction(
             "Make Admin",
@@ -66,7 +70,7 @@ const ManageUsers = () => {
     const handleRemoveAdmin = (id) => {
         confirmAction(
             "Remove Admin",
-            "Do you want to remove admin privileges?",
+            "Do you want to remove admin access?",
             async () => {
                 await api.patch(`/users/remove-admin/${id}`);
                 fetchUsers();
@@ -77,7 +81,7 @@ const ManageUsers = () => {
     const handleRemoveUser = (id) => {
         confirmAction(
             "Remove User",
-            "Do you want to remove this user?",
+            "Do you want to permanently delete this user?",
             async () => {
                 await api.delete(`/users/${id}`);
                 fetchUsers();
@@ -85,11 +89,17 @@ const ManageUsers = () => {
         );
     };
 
-    if (loading) return <p>Loading...</p>;
+    /* ================= LOADING ================= */
+    if (loading) {
+        return <p className="text-center mt-10">Loading users...</p>;
+    }
 
+    /* ================= UI ================= */
     return (
         <div className="p-6">
-            <h2 className="text-2xl font-bold mb-4">Total Users: {users.length}</h2>
+            <h2 className="text-2xl font-bold mb-4">
+                Total Users: {users.length}
+            </h2>
 
             <div className="overflow-x-auto">
                 <table className="table table-zebra w-full">
@@ -104,45 +114,61 @@ const ManageUsers = () => {
                     </thead>
 
                     <tbody>
-                        {users.map((user, index) => (
-                            <tr key={user._id}>
-                                <td>{index + 1}</td>
-                                <td>{user.name || "N/A"}</td>
-                                <td>{user.email}</td>
-                                <td>
-                                    <span
-                                        className={`badge ${user.role === "admin" ? "badge-success" : "badge-info"
-                                            }`}
-                                    >
-                                        {user.role}
-                                    </span>
-                                </td>
-                                <td className="space-x-2">
-                                    {user.role === "admin" ? (
-                                        <button
-                                            onClick={() => handleRemoveAdmin(user._id)}
-                                            className="btn btn-warning btn-sm"
-                                        >
-                                            Remove Admin
-                                        </button>
-                                    ) : (
-                                        <button
-                                            onClick={() => handleMakeAdmin(user._id)}
-                                            className="btn btn-success btn-sm"
-                                        >
-                                            Make Admin
-                                        </button>
-                                    )}
-
-                                    <button
-                                        onClick={() => handleRemoveUser(user._id)}
-                                        className="btn btn-error btn-sm"
-                                    >
-                                        Remove
-                                    </button>
+                        {users.length === 0 ? (
+                            <tr>
+                                <td colSpan="5" className="text-center">
+                                    No users found
                                 </td>
                             </tr>
-                        ))}
+                        ) : (
+                            users.map((user, index) => (
+                                <tr key={user._id}>
+                                    <td>{index + 1}</td>
+                                    <td>{user.name || user.firstName || "N/A"}</td>
+                                    <td>{user.email}</td>
+                                    <td>
+                                        <span
+                                            className={`badge ${user.role === "admin"
+                                                    ? "badge-success"
+                                                    : "badge-info"
+                                                }`}
+                                        >
+                                            {user.role}
+                                        </span>
+                                    </td>
+                                    <td className="space-x-2">
+                                        {user.role === "admin" ? (
+                                            <button
+                                                onClick={() =>
+                                                    handleRemoveAdmin(user._id)
+                                                }
+                                                className="btn btn-warning btn-sm"
+                                            >
+                                                Remove Admin
+                                            </button>
+                                        ) : (
+                                            <button
+                                                onClick={() =>
+                                                    handleMakeAdmin(user._id)
+                                                }
+                                                className="btn btn-success btn-sm"
+                                            >
+                                                Make Admin
+                                            </button>
+                                        )}
+
+                                        <button
+                                            onClick={() =>
+                                                handleRemoveUser(user._id)
+                                            }
+                                            className="btn btn-error btn-sm"
+                                        >
+                                            Remove
+                                        </button>
+                                    </td>
+                                </tr>
+                            ))
+                        )}
                     </tbody>
                 </table>
             </div>

@@ -8,60 +8,35 @@ import {
     onAuthStateChanged,
 } from "firebase/auth";
 import { auth, googleProvider } from "../../firebase/firebase.init";
-// import { auth, googleProvider } from "../../firebase/firebase.config";
 
 const AuthProvider = ({ children }) => {
     const [user, setUser] = useState(null);
-    const [loading, setLoading] = useState(true);
+    const [loading, setLoading] = useState(true); // true until Firebase responds
 
-    /* =========================
-       AUTH FUNCTIONS
-    ========================= */
+    const createUser = (email, password) =>
+        createUserWithEmailAndPassword(auth, email, password);
+        // ↑ Don't touch loading here — onAuthStateChanged handles it
 
-    // SIGN UP
-    const createUser = (email, password) => {
-        setLoading(true);
-        return createUserWithEmailAndPassword(auth, email, password);
-    };
+    const loginUser = (email, password) =>
+        signInWithEmailAndPassword(auth, email, password);
 
-    // LOGIN
-    const loginUser = (email, password) => {
-        setLoading(true);
-        return signInWithEmailAndPassword(auth, email, password);
-    };
+    const googleLogin = () =>
+        signInWithPopup(auth, googleProvider);
 
-    // GOOGLE POPUP LOGIN
-    const googleLogin = () => {
-        setLoading(true);
-        return signInWithPopup(auth, googleProvider);
-    };
+    const logOut = () =>
+        signOut(auth);
 
-    // LOGOUT
-    const logOut = () => {
-        setLoading(true);
-        return signOut(auth);
-    };
-
-    /* =========================
-       AUTH STATE OBSERVER
-    ========================= */
     useEffect(() => {
         const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
             setUser(currentUser);
-            setLoading(false);
+            setLoading(false); // ← the ONE place loading becomes false
         });
-
-        return () => {
-            unsubscribe()
-        };
+        return () => unsubscribe();
     }, []);
 
-    /* =========================
-       CONTEXT VALUE
-    ========================= */
     const authInfo = {
         user,
-        loading,
+        loading,          // this is authLoading from useRole's perspective
         createUser,
         loginUser,
         googleLogin,

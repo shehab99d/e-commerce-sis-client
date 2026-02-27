@@ -30,7 +30,6 @@ const ShopDetail = () => {
 
   const deliveryCharge = perItemDeliveryCharge * quantity;
 
-  const isReadyForPurchase = selectedSize && quantity >= 1 && deliveryArea;
 
   useEffect(() => {
     const fetchProduct = async () => {
@@ -111,7 +110,12 @@ const ShopDetail = () => {
   }
 
   const images = [product.image1, product.image2].filter(Boolean);
-  const sizes = Array.isArray(product.size) ? product.size : [product.size];
+  const sizes = Array.isArray(product?.size) ? product.size : product?.size ? [product.size] : [];
+  const isSizeRequired = sizes.length > 0;
+  const isReadyForPurchase =
+    quantity >= 1 &&
+    deliveryArea &&
+    (!isSizeRequired || selectedSize);
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 py-12 mt-16">
@@ -151,8 +155,8 @@ const ShopDetail = () => {
                     key={i}
                     onClick={() => setSelectedImage(i)}
                     className={`rounded-2xl overflow-hidden transition-all duration-300 ${selectedImage === i
-                        ? "ring-4 ring-black shadow-xl scale-105"
-                        : "ring-2 ring-gray-200 hover:ring-gray-400"
+                      ? "ring-4 ring-black shadow-xl scale-105"
+                      : "ring-2 ring-gray-200 hover:ring-gray-400"
                       }`}
                   >
                     <img
@@ -204,8 +208,8 @@ const ShopDetail = () => {
                 <button
                   onClick={() => setIsWishlisted(!isWishlisted)}
                   className={`p-3 rounded-xl transition-all duration-300 ${isWishlisted
-                      ? "bg-red-100 text-red-600 scale-110"
-                      : "bg-white shadow-md hover:bg-gray-50"
+                    ? "bg-red-100 text-red-600 scale-110"
+                    : "bg-white shadow-md hover:bg-gray-50"
                     }`}
                 >
                   <Heart className={`w-5 h-5 ${isWishlisted ? "fill-current" : ""}`} />
@@ -241,8 +245,8 @@ const ShopDetail = () => {
                     key={size}
                     onClick={() => setSelectedSize(size)}
                     className={`px-8 py-3 rounded-xl font-semibold transition-all duration-300 ${selectedSize === size
-                        ? "bg-black text-white shadow-lg scale-105"
-                        : "bg-gray-100 hover:bg-gray-200"
+                      ? "bg-black text-white shadow-lg scale-105"
+                      : "bg-gray-100 hover:bg-gray-200"
                       }`}
                   >
                     {size}
@@ -281,8 +285,8 @@ const ShopDetail = () => {
                 <button
                   onClick={() => setDeliveryArea("dhaka")}
                   className={`p-4 rounded-xl font-semibold transition-all duration-300 ${deliveryArea === "dhaka"
-                      ? "bg-black text-white shadow-lg scale-105"
-                      : "bg-gray-100 hover:bg-gray-200"
+                    ? "bg-black text-white shadow-lg scale-105"
+                    : "bg-gray-100 hover:bg-gray-200"
                     }`}
                 >
                   <div className="text-sm mb-1">Inside Dhaka</div>
@@ -291,8 +295,8 @@ const ShopDetail = () => {
                 <button
                   onClick={() => setDeliveryArea("outside")}
                   className={`p-4 rounded-xl font-semibold transition-all duration-300 ${deliveryArea === "outside"
-                      ? "bg-black text-white shadow-lg scale-105"
-                      : "bg-gray-100 hover:bg-gray-200"
+                    ? "bg-black text-white shadow-lg scale-105"
+                    : "bg-gray-100 hover:bg-gray-200"
                     }`}
                 >
                   <div className="text-sm mb-1">Outside Dhaka</div>
@@ -320,8 +324,8 @@ const ShopDetail = () => {
               onClick={handleBuyNow}
               disabled={!isReadyForPurchase}
               className={`w-full py-5 rounded-2xl font-bold text-lg transition-all duration-300 ${isReadyForPurchase
-                  ? "bg-gradient-to-r from-black to-gray-800 text-white shadow-2xl hover:shadow-3xl hover:scale-105"
-                  : "bg-gray-300 text-gray-500 cursor-not-allowed"
+                ? "bg-gradient-to-r from-black to-gray-800 text-white shadow-2xl hover:shadow-3xl hover:scale-105"
+                : "bg-gray-300 text-gray-500 cursor-not-allowed"
                 }`}
             >
               {isReadyForPurchase ? (
