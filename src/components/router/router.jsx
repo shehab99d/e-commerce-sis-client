@@ -19,6 +19,7 @@ import Checkout from "../pages/checkout/Checkout";
 import AdminRoute from "./AdminRoute";
 import AuthCard from "../pages/Login/Login";
 import ManageUsers from "../../AdminRoutes/ManageUsers"
+import Cart from "../pages/Cart/Cart";
 
 
 
@@ -55,15 +56,14 @@ export const router = createBrowserRouter([
         path: 'shop',
         Component: Shop
       },
-      // {
-      //   path: 'login',
-      //   // Component: Login
-      //   Component: AuthCard
-      // },
-    {
-      path: 'login',
-      Component: AuthCard
-    },
+      {
+        path: 'cart',
+        Component: Cart
+      },
+      {
+        path: 'login',
+        Component: AuthCard
+      },
       {
         path: 'shop/:id',
         Component: ShopDetail
